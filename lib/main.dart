@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'data/report_repository.dart';
+import 'screens/laporan/laporan_fasilitas_page.dart';
+import 'viewmodels/laporan_view_model.dart';
+
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (_) => CatatanStore(),
-    child: const StudyLogApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CatatanStore()),
+        ChangeNotifierProvider(
+          create: (_) => LaporanViewModel(ReportRepository()),
+        ),
+      ],
+      child: const StudyLogApp(),
+    ),
+  );
 }
 
 class CatatanMini {
@@ -51,6 +62,17 @@ class BerandaPage extends StatelessWidget {
             FilledButton(onPressed: () => Navigator.push(
               context, MaterialPageRoute(builder: (_) => const DaftarPage())),
               child: const Text('Buka Daftar Catatan')),
+            const SizedBox(height: 12),
+            FilledButton.tonalIcon(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const LaporanFasilitasPage(),
+                ),
+              ),
+              icon: const Icon(Icons.report_gmailerrorred_outlined),
+              label: const Text('Laporan Fasilitas'),
+            ),
           ],
         )),
       );
